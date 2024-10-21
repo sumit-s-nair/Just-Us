@@ -1,101 +1,139 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import React, { useState, useMemo } from 'react';
+import {
+  Box,
+  Typography,
+  TextField,
+  ThemeProvider,
+  createTheme,
+  useMediaQuery,
+} from '@mui/material';
+import ChatWindow from './chat/ChatWindow';
+import ContactList, { Contact } from './chat/ContactList';
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+const theme = createTheme();
+
+const HomePage = () => {
+  const [selectedContact, setSelectedContact] = useState<string | null>(null);
+  const [searchInput, setSearchInput] = useState('');
+
+  const contacts: Contact[] = [
+    { id: 1, name: 'Meow meow meow', lastMessage: 'Hello!', lastMessageTime: '10:15 AM', unreadCount: 3, isRead: false },
+    { id: 2, name: 'Varsha', lastMessage: 'I Love you Sumiii', lastMessageTime: '9:00 PM', unreadCount: 1, isRead: false },
+    { id: 3, name: 'Pappu', lastMessage: 'Catch you later!', lastMessageTime: 'Yesterday', unreadCount: 0, isRead: true },
+    { id: 4, name: 'Megatron', lastMessage: 'You’re next!', lastMessageTime: '2 days ago', unreadCount: 5, isRead: false },
+  ];
+
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+  const handleSelectContact = (contactName: string) => {
+    setSelectedContact(contactName);
+  };
+
+  const handleBack = () => {
+    setSelectedContact(null);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+  };
+
+  const filteredContacts = useMemo(
+    () =>
+      contacts.filter((contact) =>
+        contact.name.toLowerCase().includes(searchInput.toLowerCase())
+      ),
+    [contacts, searchInput]
   );
-}
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: 'flex', flexDirection: isSmallScreen ? 'column' : 'row', height: '100vh' }}>
+        <Box
+          sx={{
+            width: isSmallScreen ? '100%' : '450px',
+            borderRight: { md: '1px solid #1F2C34' },
+            backgroundColor: '#121B22',
+            padding: 3,
+            height: '100vh',
+          }}
+        >
+          <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#EDEDED', marginBottom: 2 }}>
+            Just Us
+          </Typography>
+
+          <TextField
+            fullWidth
+            placeholder="Search contacts"
+            variant="outlined"
+            value={searchInput}
+            onChange={handleSearchChange}
+            sx={{
+              marginBottom: 3,
+              backgroundColor: '#1F2C34',
+              borderRadius: 20,
+              input: { color: '#EDEDED' },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { borderRadius: 20, borderColor: '#1F2C34' },
+                '&:hover fieldset': { borderColor: '#3A444C' },
+                '&.Mui-focused fieldset': { borderColor: '#4A90E2' },
+              },
+            }}
+          />
+
+          <Typography variant="h6" sx={{ color: '#EDEDED' }}>
+            Recent Chats
+          </Typography>
+
+          <ContactList contacts={filteredContacts} onSelectContact={handleSelectContact} />
+        </Box>
+
+        {selectedContact && isSmallScreen ? (
+          <Box
+            sx={{
+              backgroundColor: '#000',
+              zIndex: 10,
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              overflow: 'hidden',
+            }}
+          >
+            <ChatWindow contactName={selectedContact} onBack={handleBack} />
+          </Box>
+        ) : (
+          <Box sx={{ flexGrow: 1, position: 'relative', overflow: 'hidden' }}>
+            {selectedContact ? (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: '#000',
+                  zIndex: 10,
+                }}
+              >
+                <ChatWindow contactName={selectedContact} onBack={handleBack} />
+              </Box>
+            ) : (
+              !isSmallScreen && ( // Render message only if not on small screen
+                <div className="flex items-center justify-center h-screen">
+                  <Typography variant="h5" className="text-center p-4 text-gray-200">
+                    Select a contact to start chatting!
+                  </Typography>
+                </div>
+              )
+            )}
+          </Box>
+        )}
+      </Box>
+    </ThemeProvider>
+  );
+};
+
+export default HomePage;
