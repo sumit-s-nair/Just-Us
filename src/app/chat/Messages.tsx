@@ -20,7 +20,7 @@ const Message: React.FC<MessageProps> = ({ text, isSender, timestamp }) => {
         sx={{
           maxWidth: '60%',
           padding: '10px',
-          backgroundColor: isSender ? '#4A90E2' : '#1F2C34', // Different background for sender and receiver
+          backgroundColor: isSender ? '#4A90E2' : '#1F2C34',
           color: '#EDEDED',
           borderRadius: '10px',
           boxShadow: isSender

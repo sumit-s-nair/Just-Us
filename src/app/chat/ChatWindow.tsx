@@ -22,8 +22,8 @@ const ChatWindow = ({
       { sender: 'Meow meow meow', text: 'Hello! Long time no see.', timestamp: '10:15 AM' },
       { sender: 'You', text: 'Hey! It has been a while.', timestamp: '10:16 AM' },
     ],
-    Varsha: [
-      { sender: 'Varsha', text: 'What time is the meeting?', timestamp: '9:00 AM' },
+    'Genda': [
+      { sender: 'Genda', text: 'What time is the meeting?', timestamp: '9:00 AM' },
       { sender: 'You', text: 'It’s at 11:00 AM.', timestamp: '9:01 AM' },
     ],
   });
@@ -59,7 +59,7 @@ const ChatWindow = ({
   };
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#121B22' }}>
       <ChatHeader title={contactName} onBack={onBack} />
       <Box
         ref={chatBoxRef}
@@ -67,7 +67,7 @@ const ChatWindow = ({
           flexGrow: 1,
           overflowY: 'auto',
           padding: 2,
-          backgroundColor: '#000',
+          backgroundColor: '#0B141A',
         }}
       >
         {messages.map((msg, index) => (

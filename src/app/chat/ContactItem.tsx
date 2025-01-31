@@ -18,7 +18,7 @@ interface ContactItemProps {
 const ContactItem: React.FC<ContactItemProps> = ({ contact, onSelect, isSelected }) => {
   return (
     <ListItemButton
-      onClick={() => onSelect(contact.name)} // Pass the contact name when clicked
+      onClick={() => onSelect(contact.name)}
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -50,7 +50,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact, onSelect, isSelected
             color="error"
             sx={{
               '& .MuiBadge-badge': {
-                backgroundColor: '#FF6F61', // Warm coral as the unread message badge color
+                backgroundColor: '#FF6F61',
                 color: '#fff',
               },
             }}
@@ -64,9 +64,9 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact, onSelect, isSelected
 
         {/* Read status indicator (custom icon) */}
         {contact.isRead ? (
-          <CheckCircleIcon sx={{ color: '#4A90E2', fontSize: 20 }} /> // Custom "read" icon
+          <CheckCircleIcon sx={{ color: '#4A90E2', fontSize: 20 }} />
         ) : (
-          <CheckCircleIcon sx={{ color: '#B0B0B0', fontSize: 20 }} /> // "Unread" icon with gray color
+          <CheckCircleIcon sx={{ color: '#B0B0B0', fontSize: 20 }} />
         )}
       </Box>
     </ListItemButton>
